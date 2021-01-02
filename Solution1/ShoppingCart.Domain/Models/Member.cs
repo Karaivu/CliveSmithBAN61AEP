@@ -13,3 +13,4 @@ namespace ShoppingCart.Domain.Models
         public string LastName { get; set; }
     }
 }
+//
