@@ -26,60 +26,91 @@ namespace PresentationApp.Controllers
 
         public IActionResult Index()
         {
-
             try
             {
                 var list = _prodService.GetProducts();
-                return View(list);
+                CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
+                return View(model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["Warning"] = "Failed to load the products. please try again later";
                 return RedirectToAction("Error", "Home");
             }
         }
 
-
-    /*    public IActionResult Next()
+        public IActionResult AccessoriesCategory()
         {
-            int batchNo = 0;
-            string page = HttpContext.Session.GetString("batchNo");
-            if (page == null){ batchNo = 0;  .... }
-            else
-            { batchNo = Convert.ToInt32(HttpContext.Session.GetString("batchNo"));
-                batchNo += 10;
-
-              var list =  _prodService.GetProducts().Skip(batchNo).Take(10);
-
-                HttpContext.Session.SetString("batchNo", batchNo.ToString());
-                return View("Index", list);
+            try
+            {
+                var list = _prodService.GetProducts("3");
+                CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
+                return View(model);
             }
-           
+            catch (Exception ex)
+            {
+                TempData["Warning"] = "Failed to load the products. please try again later";
+                return RedirectToAction("Error", "Home");
+            }
         }
-    */
+
+        public IActionResult PhonesCategory()
+        {
+            try
+            {
+                var list = _prodService.GetProducts("1");
+                CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["Warning"] = "Failed to load the products. please try again later";
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public IActionResult LaptopsCategory()
+        {
+            try
+            {
+                var list = _prodService.GetProducts("2");
+                CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["Warning"] = "Failed to load the products. please try again later";
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public IActionResult Details(Guid Id)
+        {
+            return View(_prodService.GetProduct(Id));
+        }
+
+        //Search Function
 
         [HttpPost]
-        public IActionResult Search(string keyword) //View you have to use a Form
+        public IActionResult Search(Guid SelectedCategory)
         {
-            var list = _prodService.GetProducts(keyword);
-            return View("Index", list);
-        }
-       
+            //1. perform search therefore return list products by category
+            //2. catalogmodel
 
-        public IActionResult Details(Guid id)
-        {
-            var p = _prodService.GetProduct(id);
-            return View(p);
+            var list = _prodService.GetProducts();
+            CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
+
+            return View("Index", model);
         }
 
         //-------------------- ADD -----------------------------
 
         [HttpGet] //this will be called before loading the Create page
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             CreateModel model = new CreateModel();
-            
+
             var list = _catService.GetCategories();
             model.Categories = list.ToList();
 
@@ -95,7 +126,7 @@ namespace PresentationApp.Controllers
             {
                 if (data.File != null)
                 {
-                    if(data.File.Length > 0)
+                    if (data.File.Length > 0)
                     {
                         string newFilename = @"/Images/" + Guid.NewGuid() + System.IO.Path.GetExtension(data.File.FileName);
                         string absolutePath = _env.WebRootPath;
@@ -116,11 +147,11 @@ namespace PresentationApp.Controllers
                 TempData["feedback"] = "Product added successfully";
                 ModelState.Clear();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["warning"] = "Product was not added successfully. Check your inputs";
             }
-            
+
             var list = _catService.GetCategories();
             data.Categories = list.ToList();
 
@@ -133,12 +164,21 @@ namespace PresentationApp.Controllers
             _prodService.DeleteProduct(id);
 
             TempData["feedback"] = "product deleted successfully";  //ViewData should be changed to TempData
-           
+
             return RedirectToAction("Index");
         }
 
+        /*[Authorize(Roles = "Admin")]
+        public IActionResult Hide(Guid id)
+        {
+            _prodService.HideProduct(id);
 
+            TempData["feedback"] = "product hidden successfully"; 
 
+            return RedirectToAction("Index");
+        }
+
+        */
 
     }
 }

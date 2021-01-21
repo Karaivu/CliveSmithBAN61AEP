@@ -22,7 +22,6 @@ namespace ShoppingCart.Data.Repositories
 
         public Guid AddProduct(Product p)
         {
-          // p.Category = null; //because the runtime thinks that it needs to add a new category
            
             _context.Products.Add(p);
             _context.SaveChanges();
@@ -36,6 +35,15 @@ namespace ShoppingCart.Data.Repositories
             _context.Products.Remove(p);
             _context.SaveChanges();
         }
+
+        /*
+        public void HideProduct(Guid id)
+        {
+            Product p = GetProduct(id);
+            p.hide = true;
+            _context.SaveChanges();
+        }
+        */
 
         public Product GetProduct(Guid id)
         { 

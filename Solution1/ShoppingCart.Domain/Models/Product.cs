@@ -31,8 +31,9 @@ namespace ShoppingCart.Domain.Models
 
         public string ImageUrl { get; set; }
 
-
-        //supplier/ warehouse/ shelving info/ manager responsible for this product/ unit price
+        /*[DefaultValue(false)]
+        public bool Hide { get; set; }
+        */
 
     }
 }

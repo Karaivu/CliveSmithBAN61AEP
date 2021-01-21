@@ -29,17 +29,88 @@
             </div>
 
             <div class="form-group">
-                <label   class="control-label">Type in url to image</label>
+                <label class="control-label">Type in url to image</label>
                 <input asp-for="Product.ImageUrl" class="form-control" />
                 <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label   class="control-label">Select file to upload:</label>
+                <label class="control-label">Select file to upload:</label>
                 <input type="file" class="form-control" asp-for="File" />
                 <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
             </div>
 
+            @model PresentationApp.Models.CreateModel
+
+            @{
+                ViewData["Title"] = "Create";
+            }
+
+            <h1>Create new product</h1>
+
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="Product.Name" class="control-label"></label>
+                            <input asp-for="Product.Name" class="form-control" />
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Description" class="control-label"></label>
+                            <input asp-for="Product.Description" class="form-control" />
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Price" class="control-label"></label>
+                            <input asp-for="Product.Price" class="form-control" />
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Type in url to image</label>
+                            <input asp-for="Product.ImageUrl" class="form-control" />
+                            <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Select file to upload:</label>
+                            <input type="file" class="form-control" asp-for="File" />
+                            <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="Product.Stock" class="control-label"></label>
+                            <input asp-for="Product.Stock" class="form-control" />
+                            <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Category</label>
+
+                            <select class="form-control" asp-for="Product.Category.Id">
+                                @foreach (var c in Model.Categories)
+                                {
+                                    <option value="@c.Id">@c.Name</option>
+                                }
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
 
             <div class="form-group">
                 <label asp-for="Product.Stock" class="control-label"></label>

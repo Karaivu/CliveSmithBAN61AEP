@@ -9,7 +9,8 @@ namespace PresentationApp.Controllers
 {
     public class OrdersController : Controller
     {
-        [Authorize][HttpPost]
+        [Authorize]
+        [HttpPost]
         public IActionResult Checkout()
         {
             //1. get all the items from the cart table for the logged in user

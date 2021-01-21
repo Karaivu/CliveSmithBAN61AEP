@@ -1,15 +1,13 @@
 ﻿@model CatalogModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "PhonesCategory";
 }
 
-<h1>Products Catalogue</h1>
-
+<h1>PhonesCategory</h1>
 
 <hr />
 <div>
-    @Html.Partial("SearchProductPartial")
+    @Html.Partial("SearchProductPartial", Model)
 </div>
 
 <hr />
@@ -20,6 +18,3 @@
         @Html.Partial("ProductDisplayPartial", Model)
     </div>
 </div>
-
-
-
