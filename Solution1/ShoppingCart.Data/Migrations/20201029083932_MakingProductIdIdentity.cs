@@ -8,7 +8,7 @@ namespace ShoppingCart.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<Guid>(
-                name: "Id",
+                name: "Id", 
                 table: "Products",
                 nullable: false,
                 defaultValueSql: "NEWID()",

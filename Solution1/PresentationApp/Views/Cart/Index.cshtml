@@ -1,0 +1,25 @@
+﻿@model CatalogModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Products Catalogue</h1>
+
+@if (SignInManager.IsSignedIn(User))
+{
+<div class="container">
+    <div class="row">
+        @Html.Partial("ProductDisplayPartial", Model)
+    </div>
+</div>
+}
+
+
+
+
+
+

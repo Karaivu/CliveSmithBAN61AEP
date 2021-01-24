@@ -1,4 +1,9 @@
 ﻿@model ShoppingCart.Application.ViewModels.ProductViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +13,6 @@
 
 <div class="row">
     <div class="col10">
-        <h4>ProductViewModel</h4>
         <hr />
         <dl class="row">
 
@@ -48,19 +52,20 @@
 
         </dl>
     </div>
-    <div class="col-2">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="col-2">
 
-        <form asp-action="AddtoCart" asp-controller="Cart">
+            <form asp-action="Index" asp-controller="Cart">
 
-            <input type="hidden" value="@Model.Id" name="productId" />
+                <input type="hidden" value="@Model.Id" name="productId" />
 
-            Qty: <input type="text" name="qty" />
+                <input type="submit" value="Add to Cart" />
 
-            <input type="submit" value="Add to Cart" />
+            </form>
 
-        </form>
-
-    </div>
+        </div>
+    }
 </div>
 
 <div>

@@ -47,6 +47,7 @@ namespace PresentationApp
            
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddCloudscribePagination();
 
         
 

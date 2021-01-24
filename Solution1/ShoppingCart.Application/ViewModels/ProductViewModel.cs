@@ -15,10 +15,9 @@ namespace ShoppingCart.Application.ViewModels
 
         public string Description { get; set; }
 
-        [Range(1, 100)]
+        [Range(1, 5000)]
         [DataType(DataType.Currency)]
         public double Price { get; set; }
-
 
         public CategoryViewModel Category { get; set; }
 

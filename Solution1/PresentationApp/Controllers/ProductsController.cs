@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using PresentationApp.Models;
 using ShoppingCart.Application.Interfaces;
 using ShoppingCart.Application.ViewModels;
+using cloudscribe.Pagination.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PresentationApp.Controllers
 {
@@ -24,7 +26,7 @@ namespace PresentationApp.Controllers
             _env = env;
         }
 
-        public IActionResult Index()
+        /*public IActionResult Index2()
         {
             try
             {
@@ -38,43 +40,25 @@ namespace PresentationApp.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+        */
 
-        public IActionResult AccessoriesCategory()
+        public IActionResult Index(int pageNumber = 1, int pageSize = 10) 
         {
             try
             {
-                var list = _prodService.GetProducts("3");
+                int ExcludeRecords = (pageNumber * pageSize) - pageSize;
+                var list = _prodService.GetProducts().Skip(ExcludeRecords).Take(pageSize);
                 CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                TempData["Warning"] = "Failed to load the products. please try again later";
-                return RedirectToAction("Error", "Home");
-            }
-        }
 
-        public IActionResult PhonesCategory()
-        {
-            try
-            {
-                var list = _prodService.GetProducts("1");
-                CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                TempData["Warning"] = "Failed to load the products. please try again later";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        public IActionResult LaptopsCategory()
-        {
-            try
-            {
-                var list = _prodService.GetProducts("2");
-                CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
+                /*var answer = new PagedResult<ProductViewModel>
+                {
+                    Data = list.AsNoTracking().ToList(),
+                    TotalItems = _prodService.GetProducts().Count(),
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                */
+                
                 return View(model);
             }
             catch (Exception ex)
@@ -92,12 +76,12 @@ namespace PresentationApp.Controllers
         //Search Function
 
         [HttpPost]
-        public IActionResult Search(Guid SelectedCategory)
+        public IActionResult Search(int SelectedCategory)
         {
             //1. perform search therefore return list products by category
             //2. catalogmodel
 
-            var list = _prodService.GetProducts();
+            var list = _prodService.GetProducts(SelectedCategory);
             CatalogModel model = new CatalogModel() { Products = list, Categories = _catService.GetCategories() };
 
             return View("Index", model);
@@ -119,7 +103,7 @@ namespace PresentationApp.Controllers
 
         [HttpPost] //2nd method will  be triggered when the user clicks on the submit button!
         [Authorize(Roles = "Admin")]
-        public IActionResult Create(CreateModel data) //postman, fiddler, burp, zap
+        public IActionResult Create(CreateModel data) 
         {
             //validation
             try
@@ -130,8 +114,6 @@ namespace PresentationApp.Controllers
                     {
                         string newFilename = @"/Images/" + Guid.NewGuid() + System.IO.Path.GetExtension(data.File.FileName);
                         string absolutePath = _env.WebRootPath;
-
-                        //C:\Users\Ryan\source\repos\BAN62AEP\BAN62AEP\Solution1\PresentationApp\wwwroot\
 
                         using (var stream = System.IO.File.Create(absolutePath + newFilename))
                         {

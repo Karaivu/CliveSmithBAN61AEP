@@ -68,6 +68,12 @@ namespace ShoppingCart.Application.Services
 
         }
 
+        public IQueryable<ProductViewModel> GetProducts(int category)
+        {
+            return _productsRepo.GetProducts().Where(p => p.Category.Id == category)
+                   .ProjectTo<ProductViewModel>(_autoMapper.ConfigurationProvider);
 
+
+        }
     }
 }
